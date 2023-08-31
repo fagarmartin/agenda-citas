@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Error from "./Error";
-function Form({ setPatients, patients }) {
-
-  const generateId =()=>{ //generate unique id
+function Form({ setPatients, patients, patient }) {
+  const generateId = () => {
+    //generate unique id
     const random = Math.random().toString(36).substring(2);
-    const fecha=Date.now().toString(36) 
-    return random+fecha
-  }
+    const fecha = Date.now().toString(36);
+    return random + fecha;
+  };
+
   const [formInputs, setFormInputs] = useState({
-    id:"",
+    id: "",
     name: "",
     owner: "",
     email: "",
@@ -31,7 +32,7 @@ function Form({ setPatients, patients }) {
 
     setError(false);
     const objectPatient = {
-      id:generateId(),
+      id: generateId(),
       name,
       owner,
       email,
@@ -42,7 +43,7 @@ function Form({ setPatients, patients }) {
     setPatients([...patients, objectPatient]); //adds new patient
     setFormInputs({
       //reset values
-      id:"",
+      id: "",
       name: "",
       owner: "",
       email: "",
@@ -50,7 +51,13 @@ function Form({ setPatients, patients }) {
       symptoms: "",
     });
   };
-
+  useEffect(() => {
+   
+    if (Object.keys(patient).length > 0) { // fills form values when edit is pressed
+      setFormInputs(patient)
+    }
+   
+  }, [patient]);
   return (
     <div className="md:w-1/2 lg:w-2/5 mx-5">
       {" "}
