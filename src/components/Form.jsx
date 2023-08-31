@@ -32,31 +32,40 @@ function Form({ setPatients, patients, patient }) {
 
     setError(false);
     const objectPatient = {
-      id: generateId(),
       name,
       owner,
       email,
       date,
       symptoms,
     };
-
-    setPatients([...patients, objectPatient]); //adds new patient
-    setFormInputs({
-      //reset values
-      id: "",
-      name: "",
-      owner: "",
-      email: "",
-      date: "",
-      symptoms: "",
-    });
+    if (patient.id) {
+      //editing the patient
+      objectPatient.id = patient.id;
+      const updatedpatients = patients.map((patientState) =>
+        patientState.id === patient.id ? objectPatient : patientState
+      );
+      //searched the id and replaces the object in the array
+      setPatients(updatedpatients);
+    } else {
+      // adding new registry
+      objectPatient.id = generateId();
+      setPatients([...patients, objectPatient]); //adds new patient
+      setFormInputs({
+        //reset values
+        id: "",
+        name: "",
+        owner: "",
+        email: "",
+        date: "",
+        symptoms: "",
+      });
+    }
   };
   useEffect(() => {
-   
-    if (Object.keys(patient).length > 0) { // fills form values when edit is pressed
-      setFormInputs(patient)
+    if (Object.keys(patient).length > 0) {
+      // fills form values when edit is pressed
+      setFormInputs(patient);
     }
-   
   }, [patient]);
   return (
     <div className="md:w-1/2 lg:w-2/5 mx-5">
@@ -163,7 +172,8 @@ function Form({ setPatients, patients, patient }) {
         <input
           type="submit"
           className="bg-indigo-600 w-full rounded-md p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-all"
-          value="Add patient"
+          // if the patient exists
+          value={patient.id ? "Edit Patient" : "Add Patient"}
         />
       </form>
     </div>
