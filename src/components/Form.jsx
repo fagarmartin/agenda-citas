@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Error from "./Error";
-function Form({ setPatients, patients, patient }) {
+function Form({ setPatients, patients, patient,setPatient }) {
   const generateId = () => {
     //generate unique id
     const random = Math.random().toString(36).substring(2);
@@ -50,15 +50,7 @@ function Form({ setPatients, patients, patient }) {
       // adding new registry
       objectPatient.id = generateId();
       setPatients([...patients, objectPatient]); //adds new patient
-      setFormInputs({
-        //reset values
-        id: "",
-        name: "",
-        owner: "",
-        email: "",
-        date: "",
-        symptoms: "",
-      });
+      setPatient({}) //cleans state    
     }
   };
   useEffect(() => {
