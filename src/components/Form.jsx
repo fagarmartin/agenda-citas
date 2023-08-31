@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Form() {
+function Form({ setPatients,patients }) {
   const [formInputs, setFormInputs] = useState({
     name: "",
     owner: "",
@@ -8,18 +8,30 @@ function Form() {
     date: "",
     symptoms: "",
   });
+
+  const [error, setError] = useState(false);
   const handleInputChange = (e) => {
     setFormInputs({ ...formInputs, [e.target.name]: e.target.value }); // actualiza el estado de la propiedad que cambie en ese momento
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const {name, owner, email, date, symptoms} = formInputs;
+    const { name, owner, email, date, symptoms } = formInputs;
     if ([name, owner, email, date, symptoms].includes("")) {
-      console.log("hay al menos un campo vacío");
+      setError(true);
       return;
     }
-    console.log("enviando formulario");
+
+    setError(false);
+    const objectPatient = {
+      name,
+      owner,
+      email,
+      date,
+      symptoms,
+    };
+    
+    setPatients([...patients,objectPatient]);
   };
 
   return (
@@ -34,6 +46,13 @@ function Form() {
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg py-10 px-5 mb-10"
       >
+        {error && (
+          <div>
+            <p className="bg-red-800 text-white text-center font-bold p-3 uppercase mb-3 rounded">
+              Todos los campos son obligatorios
+            </p>
+          </div>
+        )}
         <div className="mb-5">
           <label
             className="block text-gray-700 uppercase font-bold"
