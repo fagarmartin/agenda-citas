@@ -1,7 +1,7 @@
 import "./App.css";
 import Form from "./components/Form";
 import Header from "./components/Header";
-import PacientList from "./components/PacientList";
+import PatientList from "./components/PatientList";
 import { useState } from "react";
 function App() {
   const [patients,setPatients]=useState([]);
@@ -11,7 +11,7 @@ function App() {
       <Header />
       <div className="mt-12 md:flex">
         <Form setPatients={setPatients} patients={patients} />
-        <PacientList />
+        <PatientList  patients={patients} />
       </div>
     </div>
   );

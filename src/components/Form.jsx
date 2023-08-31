@@ -1,7 +1,14 @@
 import { useState } from "react";
+import Error from "./Error";
+function Form({ setPatients, patients }) {
 
-function Form({ setPatients,patients }) {
+  const generateId =()=>{ //generate unique id
+    const random = Math.random().toString(36).substring(2);
+    const fecha=Date.now().toString(36) 
+    return random+fecha
+  }
   const [formInputs, setFormInputs] = useState({
+    id:"",
     name: "",
     owner: "",
     email: "",
@@ -24,14 +31,24 @@ function Form({ setPatients,patients }) {
 
     setError(false);
     const objectPatient = {
+      id:generateId(),
       name,
       owner,
       email,
       date,
       symptoms,
     };
-    
-    setPatients([...patients,objectPatient]);
+
+    setPatients([...patients, objectPatient]); //adds new patient
+    setFormInputs({
+      //reset values
+      id:"",
+      name: "",
+      owner: "",
+      email: "",
+      date: "",
+      symptoms: "",
+    });
   };
 
   return (
@@ -47,11 +64,9 @@ function Form({ setPatients,patients }) {
         className="bg-white shadow-md rounded-lg py-10 px-5 mb-10"
       >
         {error && (
-          <div>
-            <p className="bg-red-800 text-white text-center font-bold p-3 uppercase mb-3 rounded">
-              Todos los campos son obligatorios
-            </p>
-          </div>
+          <Error>
+            <p>Todos los campos son obligatorios</p>
+          </Error>
         )}
         <div className="mb-5">
           <label
